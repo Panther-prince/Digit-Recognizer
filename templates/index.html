@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Digit Recognition</title>
+
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            /* background-image: url("/templates/digit-image.webp");
+            background: linear-gradient(135deg, #2c3e50, #3498db); */
+            background-image: url("/static/digit-image.webp");
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            font-family: "Poppins", sans-serif;
+        }
+
+        .container {
+            width: 380px;
+            /* background: rgba(255, 255, 255, 0.12); */
+            background: rgb(0 0 0 / 39%);;
+            padding: 25px;
+            border-radius: 20px;
+            backdrop-filter: blur(15px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+            text-align: center;
+            animation: fadeIn 0.9s ease;
+        }
+
+        @keyframes fadeIn {
+            from { transform: translateY(30px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        h2 {
+            color: #fff;
+            margin-bottom: 20px;
+        }
+
+        canvas {
+            border-radius: 12px;
+            box-shadow: 0 0 20px rgba(255,255,255,0.2);
+            background: #ffffff;
+            border: 2px solid #fff;
+            cursor: crosshair;
+        }
+
+        .btn-group {
+            margin-top: 20px;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        button {
+            width: 48%;
+            padding: 12px;
+            border: none;
+            font-size: 16px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: 600;
+            letter-spacing: 1px;
+            transition: 0.3s ease;
+        }
+
+        .clear-btn {
+            background: #e74c3c;
+            color: white;
+        }
+
+        .clear-btn:hover {
+            background: #ff7666;
+        }
+
+        .predict-btn {
+            background: #2ecc71;
+            color: white;
+        }
+
+        .predict-btn:hover {
+            background: #67e39c;
+        }
+
+        #result {
+            margin-top: 25px;
+            font-size: 28px;
+            font-weight: bold;
+            color: #fff;
+            text-shadow: 0px 0px 10px rgba(0,0,0,0.4);
+            min-height: 34px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+        <h2>✏️ Draw a Digit (0–9)</h2>
+
+        <canvas id="canvas" width="280" height="280"></canvas>
+
+        <div class="btn-group">
+            <button class="clear-btn" onclick="clearCanvas()">Clear</button>
+            <button class="predict-btn" onclick="predictDigit()">Predict</button>
+        </div>
+
+        <div id="result"></div>
+    </div>
+
+    <script>
+        const canvas = document.getElementById("canvas");
+        const ctx = canvas.getContext("2d");
+
+        // Canvas background
+        ctx.fillStyle = "white";
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+        ctx.lineWidth = 12;
+        ctx.lineCap = "round";
+        ctx.strokeStyle = "black";
+
+        let painting = false;
+
+        const start = (e) => {
+            painting = true;
+            draw(e);
+        };
+
+        const end = () => {
+            painting = false;
+            ctx.beginPath();
+        };
+
+        function draw(e) {
+            if (!painting) return;
+
+            const rect = canvas.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+
+            ctx.lineTo(x, y);
+            ctx.stroke();
+            ctx.beginPath();
+            ctx.moveTo(x, y);
+        }
+
+        canvas.addEventListener("mousedown", start);
+        canvas.addEventListener("mouseup", end);
+        canvas.addEventListener("mousemove", draw);
+
+        function clearCanvas() {
+            ctx.fillStyle = "white";
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            document.getElementById("result").innerText = "";
+        }
+
+        function predictDigit() {
+            let small = document.createElement("canvas");
+            let sctx = small.getContext("2d");
+            small.width = 28;
+            small.height = 28;
+
+            sctx.fillStyle = "black";
+            sctx.fillRect(0, 0, 28, 28);
+
+            sctx.drawImage(canvas, 0, 0, 28, 28);
+
+            let dataURL = small.toDataURL("image/png");
+
+            fetch("/predict", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ image: dataURL })
+            })
+            .then(res => res.json())
+            .then(data => {
+                document.getElementById("result").innerText =
+                    "Prediction: " + data.digit;
+            })
+            .catch(err => console.log("Error:", err));
+        }
+    </script>
+
+</body>
+</html>
