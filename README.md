@@ -1,130 +1,106 @@
-Digit-Recognizer
+# 🧠 Digit Recognizer (0–9) — Streamlit Web App
 
-A handwritten digit recognition web application built using Streamlit and a Keras/TensorFlow CNN trained on the MNIST dataset.
-Users can draw digits (0–9) on a canvas, and the app predicts the digit in real time.
+A simple and interactive **Handwritten Digit Recognition Web Application** built using **TensorFlow/Keras** and **Streamlit**.  
+Users can draw digits (0–9) on a canvas, and the trained CNN model predicts the digit in real time.
 
-📁 Project Structure
-Digit-Reco/
-├─ .git/
-├─ README.md
-├─ app.py                    # Streamlit app (UI + model loading + prediction)
-├─ digit-reco-colab.ipynb    # Google Colab notebook for model training
-├─ mnist_cnn_model.h5        # Trained MNIST CNN model
-├─ requirements.txt
-└─ static/
-   └─ digit-image.webp        # Static asset used in UI
+🚀 **Live Demo:**  
+🔗 https://digit-recognizer-0-9.streamlit.app/
 
-✔ Key Facts
+📦 **GitHub Repository:**  
+🔗 https://github.com/Panther-prince/Digit-Recognizer
 
-Built completely in Streamlit using streamlit-drawable-canvas.
+---
 
-Model used: mnist_cnn_model.h5 loaded using keras.models.load_model().
+## 📁 Project Structure
 
-Training notebook available: digit-reco-colab.ipynb.
+Digit-Recognizer/
+│── app.py # Main Streamlit application
+│── digit-reco-colab.ipynb # CNN model training notebook (Google Colab)
+│── mnist_cnn_model.h5 # Trained MNIST CNN model
+│── requirements.txt # Dependencies
+│── README.md # Documentation
+│── static/
+│ └── digit-image.webp # App UI image
 
-Dependencies include Streamlit, TensorFlow, NumPy, Pillow, and Canvas integration.
+yaml
+Copy code
 
-✨ Features
+---
 
-Draw digits (0–9) directly in the browser.
+## ✨ Features
 
-Converts drawing to grayscale, resizes to 28×28, and normalizes like MNIST.
+- ✍️ Draw digits directly inside the browser (0–9)
+- 🎛️ Canvas built using **streamlit-drawable-canvas**
+- 🧼 Automatic image preprocessing (grayscale → resize → normalize)
+- 🔮 Real-time digit prediction using **CNN model**
+- 📊 Probability scores for each digit
+- 🧱 Clean & minimal Streamlit interface
+- 📚 Colab notebook included for retraining and experimentation
 
-CNN model predicts the digit with confidence scores.
+---
 
-Clean and modern Streamlit interface.
+## 🛠️ Technologies Used
 
-Instant prediction output.
+- **Python 3.8+**
+- **TensorFlow / Keras**
+- **Streamlit**
+- **NumPy**
+- **Pillow**
+- **streamlit-drawable-canvas**
 
-🛠 Prerequisites
+---
 
-Python 3.8+
+## 📦 Installation Guide
 
-Recommended: create a virtual environment
+Follow the steps below to run the project locally:
 
-requirements.txt includes:
-streamlit>=1.20
-tensorflow>=2.10
-numpy
-Pillow
-streamlit-drawable-canvas
-
-🚀 Run the Project Locally
-1. Clone the repository
-git clone https://github.com/your-username/Digit-Reco.git
-cd Digit-Reco
-
-2. Create & activate a virtual environment
-python -m venv venv
-
+### 1️⃣ Clone the Repository
+```bash
+git clone https://github.com/Panther-prince/Digit-Recognizer.git
+cd Digit-Recognizer
+2️⃣ Create a Virtual Environment (Recommended)
 Windows:
+bash
+Copy code
+python -m venv venv
 venv\Scripts\activate
-
 macOS / Linux:
+bash
+Copy code
+python3 -m venv venv
 source venv/bin/activate
-
-3. Install dependencies
+3️⃣ Install Dependencies
+bash
+Copy code
 pip install -r requirements.txt
-
-4. Run the Streamlit app
+4️⃣ Run the Streamlit App
+bash
+Copy code
 streamlit run app.py
-
-
-Then open your browser at:
-
-👉 http://localhost:8501
-
-🧑‍💻 How to Use the App
-
-Draw a digit using your mouse or touch device.
-
-Adjust brush size if needed from the sidebar.
-
-Click Predict (or automatic prediction will trigger).
-
-The predicted digit and confidence scores will appear.
-
-Press Clear to try again.
+➡️ Open your browser and go to:
+http://localhost:8501
 
 🧠 Model Details
-
-Model file: mnist_cnn_model.h5
-
-Loaded via:
-
-tensorflow.keras.models.load_model("mnist_cnn_model.h5")
-
-
-Preprocessing steps used in app.py:
-
-Convert drawing to grayscale
-
-Resize to 28×28
-
-Normalize pixel values
-
-Reshape to (1, 28, 28, 1) for CNN input
-
-Prediction is performed via:
-
-model.predict(...)
-
-
-The highest probability (argmax) gives the predicted digit.
-
-(See the digit-reco-colab.ipynb notebook for architecture details and training logs.)
-
-🔁 Retrain / Improve the Model
-
-The included Colab notebook lets you:
-
+Model used: mnist_cnn_model.h5
+Trained on MNIST dataset (70,000 handwritten digits)
+Based on a CNN architecture (Conv2D, MaxPooling, Dense layers)
+Input Preprocessing Steps:
+Convert drawing → grayscale
+Resize to 28 × 28
+Normalize pixel values (0–1)
+Reshape to (1, 28, 28, 1)
+Predict using:
+python
+Copy code
+model.predict(img)
+🔄 Retraining the Model
+Use the Google Colab notebook:
+📄 digit-reco-colab.ipynb
+You can:
 Modify CNN architecture
+Tune hyperparameters
+Train longer
 
-Change hyperparameters (optimizer, LR, epochs …)
+Export a new .h5 model
 
-Retrain and export a new .h5 model
-
-Replace mnist_cnn_model.h5 inside the project
-
-Important:
-If you retrain, maintain the same input shape and preprocessing expected by the app.
+Replace the existing mnist_cnn_model.h5 to update the web app.
