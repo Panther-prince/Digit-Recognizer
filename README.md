@@ -1,82 +1,130 @@
 Digit-Recognizer
 
-Handwritten digit recognition web app built with Streamlit and a Keras/TensorFlow CNN trained on MNIST.
-Users draw digits on a canvas and the app predicts the digit (0–9) in real time.
+A handwritten digit recognition web application built using Streamlit and a Keras/TensorFlow CNN trained on the MNIST dataset.
+Users can draw digits (0–9) on a canvas, and the app predicts the digit in real time.
 
-Project Contents (actual)
+📁 Project Structure
 Digit-Reco/
 ├─ .git/
-├─ README.md                 # (this file — replace with content below)
-├─ app.py                    # Streamlit app (UI + model loading + inference)
-├─ digit-reco-colab.ipynb    # Colab notebook: model training & experiments
-├─ mnist_cnn_model.h5        # Trained Keras model (used by app.py)
+├─ README.md
+├─ app.py                    # Streamlit app (UI + model loading + prediction)
+├─ digit-reco-colab.ipynb    # Google Colab notebook for model training
+├─ mnist_cnn_model.h5        # Trained MNIST CNN model
 ├─ requirements.txt
 └─ static/
-   └─ digit-image.webp       # static assets used in the app UI
+   └─ digit-image.webp        # Static asset used in UI
 
+✔ Key Facts
 
-Key facts found in the repository:
-App is implemented in app.py and uses Streamlit + streamlit-drawable-canvas.
-Model file used: mnist_cnn_model.h5 (loaded via keras.models.load_model(...)).
-Notebook for training is present: digit-reco-colab.ipynb.
-requirements.txt includes streamlit, tensorflow, numpy, Pillow, and streamlit-drawable-canvas.
+Built completely in Streamlit using streamlit-drawable-canvas.
 
-Features
-Draw a digit (0–9) on a canvas inside the browser.
-Preprocessing of the drawing (grayscale, resize, invert/normalize) to match MNIST input.
-Predicts digit using the loaded CNN model (mnist_cnn_model.h5).
-Clean Streamlit UI with helpful visuals and instant feedback.
+Model used: mnist_cnn_model.h5 loaded using keras.models.load_model().
 
-Prerequisites
-Python 3.8+ recommended (TensorFlow 2.10+ may require specific Python versions).
-virtualenv or venv is recommended.
+Training notebook available: digit-reco-colab.ipynb.
 
-requirements.txt (project contains):
+Dependencies include Streamlit, TensorFlow, NumPy, Pillow, and Canvas integration.
+
+✨ Features
+
+Draw digits (0–9) directly in the browser.
+
+Converts drawing to grayscale, resizes to 28×28, and normalizes like MNIST.
+
+CNN model predicts the digit with confidence scores.
+
+Clean and modern Streamlit interface.
+
+Instant prediction output.
+
+🛠 Prerequisites
+
+Python 3.8+
+
+Recommended: create a virtual environment
+
+requirements.txt includes:
 streamlit>=1.20
 tensorflow>=2.10
 numpy
 Pillow
 streamlit-drawable-canvas
 
-Quick Start — Run Locally
-Clone the repo
+🚀 Run the Project Locally
+1. Clone the repository
 git clone https://github.com/your-username/Digit-Reco.git
 cd Digit-Reco
-(Recommended) Create and activate a virtual environment
+
+2. Create & activate a virtual environment
 python -m venv venv
-# Windows
+
+Windows:
 venv\Scripts\activate
-# macOS / Linux
+
+macOS / Linux:
 source venv/bin/activate
 
-
-Install dependencies
+3. Install dependencies
 pip install -r requirements.txt
-Run the Streamlit app
+
+4. Run the Streamlit app
 streamlit run app.py
-Open the app in your browser — Streamlit will print a local URL (usually http://localhost:8501).
 
-How to Use the App
-Use the drawing canvas to write a digit with your mouse (or finger on touch devices).
-Adjust brush size / background if the UI offers those controls in the sidebar.
-Click the predict button (or the app may auto-predict) to see the predicted digit and confidence scores.
-Use the “Clear” button to draw a new digit.
 
-Model Details (what’s inside)
-Model saved as mnist_cnn_model.h5 — loaded with tensorflow.keras.models.load_model.
-Input preprocessing (implemented in app.py) includes:
-Converting canvas image to grayscale
-Resizing the image to MNIST input size (28×28)
-Scaling/normalization to match training preprocessing
-Reshaping to model input (1, 28, 28, 1) or similar
-The app uses model.predict(...) to get class probabilities and chooses the argmax for the predicted digit.
-(For exact architecture and training logs open digit-reco-colab.ipynb.)
-Retrain / Improve Model
-The repository includes digit-reco-colab.ipynb, a Google Colab notebook with code for training the CNN on MNIST (and possibly improving it). Use that notebook to:
+Then open your browser at:
 
-Change architecture (more/less layers)
-Modify hyperparameters (epochs, optimizer, learning rate)
-Save a new *.h5 model and replace mnist_cnn_model.h5 used by the app
+👉 http://localhost:8501
 
-Tip: When saving a new model, keep the same input shape and preprocessing conventions the app expects.
+🧑‍💻 How to Use the App
 
+Draw a digit using your mouse or touch device.
+
+Adjust brush size if needed from the sidebar.
+
+Click Predict (or automatic prediction will trigger).
+
+The predicted digit and confidence scores will appear.
+
+Press Clear to try again.
+
+🧠 Model Details
+
+Model file: mnist_cnn_model.h5
+
+Loaded via:
+
+tensorflow.keras.models.load_model("mnist_cnn_model.h5")
+
+
+Preprocessing steps used in app.py:
+
+Convert drawing to grayscale
+
+Resize to 28×28
+
+Normalize pixel values
+
+Reshape to (1, 28, 28, 1) for CNN input
+
+Prediction is performed via:
+
+model.predict(...)
+
+
+The highest probability (argmax) gives the predicted digit.
+
+(See the digit-reco-colab.ipynb notebook for architecture details and training logs.)
+
+🔁 Retrain / Improve the Model
+
+The included Colab notebook lets you:
+
+Modify CNN architecture
+
+Change hyperparameters (optimizer, LR, epochs …)
+
+Retrain and export a new .h5 model
+
+Replace mnist_cnn_model.h5 inside the project
+
+Important:
+If you retrain, maintain the same input shape and preprocessing expected by the app.
